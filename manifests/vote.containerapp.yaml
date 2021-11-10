@@ -1,0 +1,26 @@
+type: Microsoft.Web/containerApps
+template:
+  containers:
+  - name: redis
+    image: mcr.microsoft.com/oss/bitnami/redis:6.0.8
+    env:
+    - name: TCP_PORT
+      value: 6379
+    - name: ALLOW_EMPTY_PASSWORD
+      value: 'yes'
+  - name: vote
+    image: mcr.microsoft.com/azuredocs/azure-vote-front:v1
+    env:
+    - name: HTTP_PORT
+      value: 80
+    - name: REDIS
+      value: localhost
+  scale:
+    maxReplicas: 1
+    minReplicas: 1
+kubeEnvironmentId: /subscriptions/5c8f3e12-757e-4183-a8d0-80effb7bf97f/resourceGroups/saty-containerapps/providers/Microsoft.Web/kubeEnvironments/saty-containerapps-env 
+configuration:
+  activeRevisionsMode: Multiple
+  ingress:
+    external: true
+    targetPort: 80
