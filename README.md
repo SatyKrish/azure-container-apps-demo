@@ -1,5 +1,5 @@
 # Azure Container Apps Demo
-Deploy Voting Microservices Application to Azure Container Apps
+Deploy Containerized Microservices Application to Azure Container Apps
 
 ## Overview
 
