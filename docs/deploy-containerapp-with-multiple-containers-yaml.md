@@ -89,7 +89,7 @@ An environment in `Azure Container Apps` creates a secure boundary around a grou
         targetPort: 80
     ```
 
-- Create a Containerapp `vote-app`.
+- Create a Containerapp for `vote-app` microservice using the `yaml` manifest.
 
     ```sh
     az containerapp create \
