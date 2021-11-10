@@ -68,16 +68,16 @@ An environment in `Azure Container Apps` creates a secure boundary around a grou
         image: mcr.microsoft.com/oss/bitnami/redis:6.0.8
         env:
         - name: TCP_PORT
-        value: 6379
+          value: 6379
         - name: ALLOW_EMPTY_PASSWORD
-        value: 'yes'
+          value: 'yes'
     - name: vote
         image: mcr.microsoft.com/azuredocs/azure-vote-front:v1
         env:
         - name: HTTP_PORT
-        value: 80
+          value: 80
         - name: REDIS
-        value: localhost
+          value: localhost
     scale:
         maxReplicas: 1
         minReplicas: 1
