@@ -3,10 +3,9 @@
 - Set environment variables for the demo.
 
     ```sh
-    RESOURCE_GROUP="saty-containerapps"
-    LOCATION="canadacentral"
-    LOG_ANALYTICS_WORKSPACE="saty-containerapps-logs"
-    CONTAINERAPPS_ENVIRONMENT="saty-containerapps-env"
+    RESOURCE_GROUP="voting-containerapps"
+    LOCATION="eastus2"
+    CONTAINERAPPS_ENVIRONMENT="voting-containerapps-env"
     ```
 
 - Create resource group for the container-apps demo.
@@ -15,24 +14,6 @@
     az group create \
         --name $RESOURCE_GROUP \
         --location "$LOCATION"
-    ```
-
-- Create a new Log Analytics workspace with the following command
-
-    > Azure Log Analytics is used to monitor your container app required when creating a Container Apps Environment.
-
-    ```sh
-    az monitor log-analytics workspace create \
-        --resource-group $RESOURCE_GROUP \
-        --workspace-name $LOG_ANALYTICS_WORKSPACE
-    ```
-
-- Retrieve the Log Analytics workspace id and key
-
-    ```sh
-    LOG_ANALYTICS_WORKSPACE_ID=`az monitor log-analytics workspace show --query customerId -g $RESOURCE_GROUP -n $LOG_ANALYTICS_WORKSPACE --out tsv`
-
-    LOG_ANALYTICS_WORKSPACE_KEY=`az monitor log-analytics workspace get-shared-keys --query primarySharedKey -g $RESOURCE_GROUP -n $LOG_ANALYTICS_WORKSPACE --out tsv`
     ```
 
 ## Create a Container Apps Environment
@@ -45,9 +26,8 @@ An environment in `Azure Container Apps` creates a secure boundary around a grou
     az containerapp env create \
         --name $CONTAINERAPPS_ENVIRONMENT \
         --resource-group $RESOURCE_GROUP \
-        --logs-workspace-id $LOG_ANALYTICS_WORKSPACE_ID \
-        --logs-workspace-key $LOG_ANALYTICS_WORKSPACE_KEY \
-        --location "$LOCATION"
+        --location "$LOCATION" \
+        --enable-mtls true
     ```
 
 
@@ -89,20 +69,31 @@ An environment in `Azure Container Apps` creates a secure boundary around a grou
         targetPort: 80
     ```
 
-- Create a Containerapp for `vote-app` microservice using the `yaml` manifest.
+- Create a Containerapp for `voting-backend` microservice using the `yaml` manifest.
 
     ```sh
     az containerapp create \
-        --name vote-app \
+        --name voting-backend \
         --resource-group $RESOURCE_GROUP \
-        --yaml manifests/vote.containerapp.yaml
+        --environment $CONTAINERAPPS_ENVIRONMENT \
+        --yaml voting-backend-containerapp.yaml
+    ```
+
+- Create a Containerapp for `voting-frontend` microservice using the `yaml` manifest.
+
+    ```sh
+    az containerapp create \
+        --name voting-frontend \
+        --resource-group $RESOURCE_GROUP \
+        --environment $CONTAINERAPPS_ENVIRONMENT \
+        --yaml voting-frontend-containerapp.yaml
     ```
 
 - Get the external ingress endpoint of `helloworld` Containerapp.
 
     ```sh
     az containerapp show \
-        --name vote-app \
+        --name voting-frontend \
         --resource-group $RESOURCE_GROUP \
         --query configuration.ingress.fqdn
     ```
