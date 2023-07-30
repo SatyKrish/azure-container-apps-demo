@@ -47,4 +47,4 @@ With Azure Container Apps, you can:
 
 ![Azure Container Apps Example Scenarios](/docs/img/azure-container-apps-example-scenarios.png)
 
-1. [Deploy ContainerApp with multiple containers using YAML manifest](docs/deploy-containerapp-with-multiple-containers-yaml.md)
+1. [Deploy Multiple Container Apps in a Container Environment with mTLS](docs/deploy-multiple-containerapps-with-mtls.md)
