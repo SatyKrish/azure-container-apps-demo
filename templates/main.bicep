@@ -10,7 +10,7 @@ param containerAppLogAnalyticsName string = 'votingapp-log'
 @description('Specifies the location for all resources.')
 @allowed([
   'eastus2'
-  'westeurope'
+  'centralus'
 ])
 param location string = 'eastus2'
 
